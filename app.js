@@ -78,8 +78,8 @@ $(function(){
 
     renderList(state, $('.shopping-list'));
 
-    //clear form after submission
-    $('#shopping-list-entry').val('');
+    //reset form
+    this.reset();
 
   });
 
