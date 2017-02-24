@@ -84,6 +84,7 @@ function deleteHandler(state, listElement, deleteSelector){
 
 //MAIN FUNCTON
 $(function(){
+//selecting HTML elements with jQuery
 var formElement = $('#js-shopping-list-form');
 var newInput = $('#shopping-list-entry');
 var listElement = $('.shopping-list');
@@ -92,10 +93,8 @@ var listElement = $('.shopping-list');
 var toggleSelector = '.shopping-item-toggle';
 var deleteSelector = '.shopping-item-delete';
 
+//adding event handlers
 addNewItemHandler(state, formElement, newInput, listElement);
-
 checkedHandler(state, listElement, toggleSelector);
-
 deleteHandler(state, listElement, deleteSelector);
-
 }); //END OF MAIN FUNCTION
