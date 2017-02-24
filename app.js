@@ -1,4 +1,4 @@
-$(function(){
+
 
   //create a state object to hold items list
   var state = {
@@ -58,7 +58,7 @@ $(function(){
       listItemHTML += '<div class="shopping-item-controls">' +
       '<button class="shopping-item-toggle">' +
           '<span class="button-label">check</span>' +
-        '</button>' +
+        '</button> ' +
         '<button class="shopping-item-delete">' +
           '<span class="button-label">delete</span>' +
         '</button>' +
@@ -70,37 +70,55 @@ $(function(){
 
   }
 
-  //add even listener for submit
-  $('#js-shopping-list-form').submit(function(event){
-    event.preventDefault();
+  //event listener function for submit
+  function addNewItemHandler(state, formElement, newInput, listElement){
+    formElement.submit(function(event){
+      event.preventDefault();
 
-    addItem(state, $('#shopping-list-entry').val());
+      addItem(state, newInput.val());
 
-    renderList(state, $('.shopping-list'));
+      renderList(state, listElement);
 
-    //reset form
-    this.reset();
+      //reset form
+      this.reset();
+    })
+  }
 
-  });
+  //event listener for checked button
+  function checkedHandler(state, listElement, toggleSelector){
 
-  //event listener for checking off items
-  //event delegation needed for new shopping items
-  $('.shopping-list').on('click', '.shopping-item-toggle', function(){
+    listElement.on('click', toggleSelector, function(){
 
-    //selecting the sibling of the parent of the this element
-    checkItem(state, $(this).parent().siblings().text());
+      //selecting the sibling of the parent of the this element
+      checkItem(state, $(this).parent().siblings().text());
 
-    renderList(state, $('.shopping-list'));
+      renderList(state, listElement);
     });
 
-  //event listener for deleting items
-  //event delegation needed
-  $('.shopping-list').on('click', '.shopping-item-delete', function(){
+  }
 
-    //selecting the sibling of the parent of the this element
-    removeItem(state, $(this).parent().siblings().text());
+  //event listener for delete button
+  function deleteHandler(state, listElement, deleteSelector){
+    listElement.on('click', deleteSelector, function(){
+      removeItem(state, $(this).parent().siblings().text());
+      renderList(state, listElement);
+    });
+  }
 
-    renderList(state, $('.shopping-list'));
-  });
+//MAIN FUNCTON
+$(function(){
+  var formElement = $('#js-shopping-list-form');
+  var newInput = $('#shopping-list-entry');
+  var listElement = $('.shopping-list');
+
+  //to be used in on() method so need to be strings
+  var toggleSelector = '.shopping-item-toggle';
+  var deleteSelector = '.shopping-item-delete';
+
+  addNewItemHandler(state, formElement, newInput, listElement);
+
+  checkedHandler(state, listElement, toggleSelector);
+
+  deleteHandler(state, listElement, deleteSelector);
 
 }); //END OF MAIN FUNCTION
